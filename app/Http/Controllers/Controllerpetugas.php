@@ -34,7 +34,7 @@ class Controllerpetugas extends Controller
             'username'=>'required|string|max:200',
             'password' => 'required|string|min:6|confirmed',
             'level'=>'required|string|max:200',
-            'no_telp'=>'required'
+            'alamat'=>'required'
         ]);
 
         if($validator->fails()){
@@ -46,7 +46,7 @@ class Controllerpetugas extends Controller
             'username' => $request->get('username'),
             'level' => $request->get('level'),
             'password' => Hash::make($request->get('password')),
-            'no_telp' => $request->get('no_telp')
+            'alamat' => $request->get('alamat')
         ]);
 
         $token = JWTAuth::fromUser($user);
