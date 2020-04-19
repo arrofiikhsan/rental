@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\jenis;
+use App\datamobil;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -12,14 +12,16 @@ use App\User;
 use DB;
 use Session;
 
-class Controllerjenis extends Controller
+class Controllerdatamobil extends Controller
 {
     public function tambah(Request $req){
         if(Auth::user()->level =="admin" ){
     
-    $simpan=jenis::create([
-            
-            'jenis_mobil'=>$req->jenis_mobil,
+    $simpan=datamobil::create([
+            'nama_mobil'=>$req->nama_mobil,
+            'tahun_mobil'=>$req->tahun_mobil,
+            'kondisi'=>$req->kondisi,
+            'plat_nomor'=>$req->plat_nomor,
             
         
     ]);
@@ -36,10 +38,13 @@ class Controllerjenis extends Controller
 
     public function update($id,Request $req){
             if(Auth::user()->level=="admin"){
-          
-        
-    $ubah=jenis::where('id',$id)->update([
-        'jenis_mobil'=>$req->jenis_mobil
+            
+      
+    $ubah=datamobil::where('id',$id)->update([
+        'nama_mobil'=>$req->nama_mobil,
+            'tahun_mobil'=>$req->tahun_mobil,
+            'kondisi'=>$req->kondisi,
+            'plat_nomor'=>$req->plat_nomor,
     
     ]);
     if($ubah){
@@ -55,7 +60,7 @@ class Controllerjenis extends Controller
     }
     public function destroy($id){
         if(Auth::user()->level=="admin"){
-        $hapus=jenis::where('id',$id)->delete();
+        $hapus=datamobil::where('id',$id)->delete();
         if($hapus){
             return Response()->json(['status'=>'berhasil']);
         }
@@ -68,12 +73,14 @@ class Controllerjenis extends Controller
 }
     public function show(){
         if(Auth::user()->level=="admin"){
-        $datajenis = jenis::get();
+        $datamobil = datamobil::get();
         $arr_data = array();
-        foreach($datajenis as $data) {
+        foreach($datamobil as $data) {
             $arr_data[] = array(
-                'jenis_mobil'=>$data->jenis_mobil
-        
+                'nama_mobil'=>$data->nama_mobil,
+            'tahun_mobil'=>$data->tahun_mobil,
+            'kondisi'=>$data->kondisi,
+            'plat_nomor'=>$data->plat_nomor,
             );
         
         }

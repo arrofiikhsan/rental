@@ -3,28 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\pelanggan;
+use App\peminjam;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-class Controllerpelanggan extends Controller
+use JWTAuth;
+use App\User;
+use DB;
+use Session;
+
+class Controllerpeminjam extends Controller
 {
     public function tambah(Request $req){
-        if(Auth::user()->level=="admin"){
-            $validator=Validator::make($req->all(),
-        [
-            'nama'=>'required',
-            'no_telp'=>'required',
-            'alamat'=>'required',
-            
-        ]
-    );
-    if($validator->fails()){
-        return Response()->json($validator->errors());
-    }
-    $simpan=pelanggan::create([
-            'nama'=>$req->nama,
+        if(Auth::user()->level =="admin" ){
+    
+    $simpan=peminjam::create([
+            'nama_peminjam'=>$req->nama_peminjam,
             'no_telp'=>$req->no_telp,
             'alamat'=>$req->alamat,
+            'nik'=>$req->nik,
+            
         
     ]);
     if($simpan){
@@ -34,28 +32,32 @@ class Controllerpelanggan extends Controller
         return response ()->json(['status'=>'gagal']);
     }
         }
-        else{
-            return response()->json(['status'=>'gagal :(']);                                      
-        }
     }
+      
+    
+
     public function update($id,Request $req){
-        if(Auth::user()->level=="admin"){
-        $validator=Validator::make($req->all(),
-        [
-            'nama_film'=>'required',
-            'genre'=>'required',
-            'deskripsi'=>'required',
-            
-        ]
-    );
-    if($validator->fails()){
-        return Response()->json($validator->errors());
-    }
-    $ubah=film::where('id',$id)->update([
-        'nama_film'=>$req->nama_film,
-            'genre'=>$req->genre,
-            'deskripsi'=>$req->deskripsi,
+            if(Auth::user()->level=="admin"){
+                $validator=Validator::make($req->all(),
+            [
+                'nama_peminjam'=>'required',
+                'no_telp'=>'required',
+                'alamat'=>'required',
+                'nik'=>'required',
+                
+    
+            ]
+        );
+        if($validator->fails()){
+            return Response()->json($validator->errors());
+        }
+    $ubah=peminjam::where('id',$id)->update([
+        'nama_peminjam'=>$req->nama_peminjam,
+        'no_telp'=>$req->no_telp,
+        'alamat'=>$req->alamat,
+        'nik'=>$req->nik,
         
+    
     ]);
     if($ubah){
         return Response()->json(['status'=>'berhasil update data']);
@@ -70,7 +72,7 @@ class Controllerpelanggan extends Controller
     }
     public function destroy($id){
         if(Auth::user()->level=="admin"){
-        $hapus=pelanggan::where('id',$id)->delete();
+        $hapus=peminjam::where('id',$id)->delete();
         if($hapus){
             return Response()->json(['status'=>'berhasil']);
         }
@@ -83,13 +85,14 @@ class Controllerpelanggan extends Controller
 }
     public function show(){
         if(Auth::user()->level=="admin"){
-        $datapelanggan = film::get();
+        $datapeminjam = peminjam::get();
         $arr_data = array();
-        foreach($datapelanggan as $data) {
+        foreach($datapeminjam as $data) {
             $arr_data[] = array(
-                'nama pelanggan'=>$data->nama,
+                'nama peminjam'=>$data->nama_peminjam,
                 'almaat'=>$data->alamat,
                 'no_telp'=>$data->no_telp,
+                'nik'=>$data->nik,
         
             );
         

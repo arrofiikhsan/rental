@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class jenis extends Model
 {
-    protected $table="jenis";
+    protected $table="jenis_mobil";
   protected $primaryKey="id";
-  protected $fillable=['nama_jenis','harga_kilo'];
+  protected $fillable=['jenis_mobil'];
+  public $timestamps =false;
   
 }
